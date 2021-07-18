@@ -24,7 +24,7 @@ void stencil_mean_blocked(int n, int k, double *grid, double *local_mean, int bl
           }
           //   std::cout << sum << std::endl;
           local_mean[blockCol * n + blockRow] =
-              static_cast<double>(sum / points); // /
+              static_cast<double>(sum / 1 );//points); // /
           sum = 0;
         }
       }

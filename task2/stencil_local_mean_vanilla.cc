@@ -2,10 +2,12 @@
 #include <iostream>
 #include <ostream>
 
-#include "stencil_local_mean_kernel.hh"
-#include "stencil_mean_blocked.hh"
 #include "utilities.hh"
 #include "time_experiment.hh"
+#include "stencil_local_mean_kernel.hh"
+#include "stencil_mean_blocked.hh"
+#include "stencil_mean_SIMD_blocked.hh"
+#include "stencil_simd.hh"
 
 
 int main(int argc, char **argv) {
@@ -44,8 +46,9 @@ int main(int argc, char **argv) {
   // print the grid
   print_grid(grid, n);
 
-  // stencil_mean_vanilla(n, k, grid, local_mean);
-  stencil_mean_blocked(n, k, grid, local_mean, blocksize);
-
+  //  stencil_mean_vanilla(n, k, grid, local_mean);
+  // stencil_mean_blocked(n, k, grid, local_mean, blocksize);
+  //  stencil_mean_SIMD_blocked(n, k, grid, local_mean, blocksize);
+  stencil_simd(n, k, grid, local_mean, blocksize);
   print_grid(local_mean, n);
 }
