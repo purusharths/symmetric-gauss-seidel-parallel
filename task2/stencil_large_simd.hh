@@ -5,9 +5,13 @@
 #include <iostream>
 #include <vcl/vectorf128.h>
 
-void stencil_simd(int n, int k, double *grid, double *local_mean,
-                  int blocksize = 4) {
-                    // std::cout << "SIMD 4d" << std::endl;
+void stencil_simd_large_vec(int n, int k, double *grid, double *local_mean,
+                            int blocksize = 4) {
+                              // std::cout << "SIMD 8d" << std::endl;
+  if (k < 4) {
+    std::cout << "WARNING: The function call uses 8 vector units and may give "
+                 "unambigious results for smaller stencil size \n ";
+  }
   for (int i = 0; i < n; i = i + (blocksize)) {
     for (int j = 0; j < n; j = j + (blocksize)) {
 
@@ -28,7 +32,7 @@ void stencil_simd(int n, int k, double *grid, double *local_mean,
           int mn = (m + 1) * (o + 1);
 
           int datasize = o + 1;
-          int vectorsize = 4;
+          int vectorsize = 8;
           int regularpart = datasize & (-vectorsize);
 
           int ll = std::max(blockRow - k, 0);
@@ -36,15 +40,29 @@ void stencil_simd(int n, int k, double *grid, double *local_mean,
           // k, n - 1); mm++) {
           for (int mm = col_min; mm <= col_max; mm++) {
             int a;
-            Vec4d sum1(0);
+            Vec8d sum1(0);
 
             for (a = 0; a < regularpart; a += vectorsize) {
-              Vec4d temp(grid[((row_min +  a) * n) + mm],
+              Vec8d temp(grid[((row_min + a) * n) + mm],
                          grid[((row_min + (a + 1)) * n) + mm],
                          grid[((row_min + (a + 2)) * n) + mm],
-                         grid[((row_min + (a + 3)) * n) + mm]);
-                         
+                         grid[((row_min + (a + 3)) * n) + mm],
+                         grid[((row_min + (a + 4)) * n) + mm],
+                         grid[((row_min + (a + 5)) * n) + mm],
+                         grid[((row_min + (a + 6)) * n) + mm],
+                         grid[((row_min + (a + 7)) * n) + mm]);
               sum1 += temp;
+            }
+
+            if (datasize - a >= 4) {
+              // get four more numbers
+              Vec4d sum2(grid[((row_min + (a + 8)) * n) + mm],
+                         grid[((row_min + (a + 9)) * n) + mm],
+                         grid[((row_min + (a + 10)) * n) + mm],
+                         grid[((row_min + (a + 11)) * n) + mm]);
+              // sum2.load(mydata + i);
+              a += 4;
+              sum += horizontal_add(sum2);
             }
 
             for (; a < datasize; a++) {
