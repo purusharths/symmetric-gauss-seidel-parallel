@@ -100,11 +100,13 @@ public:
 void benchmark(int k, int blocksize) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
-  std::vector<int> sizes = {100, 200, 500, 1000, 5000};
+  std::vector<int> sizes = {100, 200, 500, 1000, 5000, 10000};
 
-  std::cout << "Stencil Size: "<< k << ", Block Size:" << blocksize;
+  std::cout << "Stencil Size: " << k << ", Block Size:" << blocksize;
 
   std::cout << "\n**** Vanilla ****\n";
+  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -114,17 +116,16 @@ void benchmark(int k, int blocksize) {
     StencilVanilla e(n, k);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s" << std::endl;    
-    std::cout << "vanilla, " << n << ", " << d.second << ", " << d.first << ", " << flops<< ", " << flops * sizeof(NUMBER);
-    // std::cout << "n=" << n << " took " << d.second << " us for " << d.first
-    //           << " repetitions"
-    //           << " " << flops << " Gflops/s"
-    //           << " " << flops * sizeof(NUMBER) << " GByte/s" << std::endl;
+
+    std::cout << "vanilla, " << n << ", " << d.second << ", " << d.first << ", "
+              << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
   std::cout << "**** Blocked ****\n";
+  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -134,18 +135,16 @@ void benchmark(int k, int blocksize) {
     StencilBlocked e(n, k, blocksize);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s" << std::endl;
-    std::cout << "blocked, " << n << ", " << d.second << ", " << d.first << ", " << flops<< ", " << flops * sizeof(NUMBER);
 
-    // std::cout << "n=" << n << " took " << d.second << " us for " << d.first
-    //           << " repetitions"
-    //           << " " << flops << " Gflops/s"
-    //           << " " << flops * sizeof(NUMBER) << " GByte/s" << std::endl;
+    std::cout << "blocked, " << n << ", " << d.second << ", " << d.first << ", "
+              << flops << ", " << flops * sizeof(NUMBER)  << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
   // ---------------------------------------------------------------------------------
 
   std::cout << "**** SIMD OMP ****\n";
+  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -155,19 +154,19 @@ void benchmark(int k, int blocksize) {
     StencilSIMD_OMP e(n, k, blocksize);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s" << std::endl;
-    std::cout << "simd omp, " << n << ", " << d.second << ", " << d.first << ", " << flops<< ", " << flops * sizeof(NUMBER);
 
-    // std::cout << "n=" << n << " took " << d.second << " us for " << d.first
-    //           << " repetitions"
-    //           << " " << flops << " Gflops/s"
-    //           << " " << flops * sizeof(NUMBER) << " GByte/s" << std::endl;
+    std::cout << "simd omp, " << n << ", " << d.second << ", " << d.first
+              << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
 
   std::cout << "**** SIMD ****\n";
+
+  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            << std::endl;
+
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -177,31 +176,30 @@ void benchmark(int k, int blocksize) {
     StencilSIMD e(n, k, blocksize);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s" << std::endl;
-    std::cout << "simd 4d, " << n << ", " << d.second << ", " << d.first << ", " << flops<< ", " << flops * sizeof(NUMBER);
-
-    // std::cout << "n=" << n << " took " << d.second << " us for " << d.first
-    //           << " repetitions"
-    //           << " " << flops << " Gflops/s"
-    //           << " " << flops * sizeof(NUMBER) << " GByte/s" << std::endl;
+    std::cout << "simd 4d, " << n << ", " << d.second << ", " << d.first << ", "
+              << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
 
   std::cout << "**** SIMD Large Vec ****\n";
+  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
       exit(1);
     }
-
-    StencilSIMD_LargeVec e(n, k, blocksize);
-    auto d = time_experiment(e);
-    double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s" << std::endl;
-    std::cout << "simd 8d, "<< n << ", " << d.second << ", " << d.first << ", " << flops<< ", " << flops * sizeof(NUMBER);
-
+    if (k > 7) {
+      StencilSIMD_LargeVec e(n, k, blocksize);
+      auto d = time_experiment(e);
+      double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
+      std::cout << "simd 8d, " << n << ", " << d.second << ", " << d.first
+                << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
+    } else {
+      std::cout << "Stencil smaller than vector size. Skipping..." << std::endl;
+    }
     // std::cout << "n=" << n << " took " << d.second << " us for " << d.first
     //           << " repetitions"
     //           << " " << flops << " Gflops/s"

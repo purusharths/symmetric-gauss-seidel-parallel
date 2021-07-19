@@ -8,9 +8,9 @@
 void stencil_simd_large_vec(int n, int k, double *grid, double *local_mean,
                             int blocksize = 4) {
                               // std::cout << "SIMD 8d" << std::endl;
-  if (k < 4) {
-    std::cout << "WARNING: The function call uses 8 vector units and may give "
-                 "unambigious results for smaller stencil size \n ";
+  if (k < 7) {
+    std::cout << "WARNING: The function call uses 8 vector units and *will* give"
+                 "ambigious results for smaller stencil size \n ";
   }
   for (int i = 0; i < n; i = i + (blocksize)) {
     for (int j = 0; j < n; j = j + (blocksize)) {

@@ -1,0 +1,56 @@
+Stencil Size: 8, Block Size:5
+**** Vanilla ****
+experiment, n, time (us), repetitions, Gflops/s, GByte/s
+vanilla, 100, 370759, 128, 0.997737, 7.9819
+vanilla, 200, 388258, 32, 0.952769, 7.62215
+vanilla, 500, 312419, 4, 0.92504, 7.40032
+vanilla, 1000, 319052, 1, 0.905808, 7.24647
+vanilla, 5000, 8070645, 1, 0.89522, 7.16176
+
+
+----Experiment Over---- 
+
+**** Blocked ****
+experiment, n, time (us), repetitions, Gflops/s, GByte/s
+blocked, 100, 339869, 128, 1.08842, 8.70735
+blocked, 200, 357825, 32, 1.0338, 8.27041
+blocked, 500, 286494, 4, 1.00875, 8.06998
+blocked, 1000, 294689, 1, 0.980695, 7.84556
+blocked, 5000, 7450317, 1, 0.969757, 7.75806
+
+
+----Experiment Over---- 
+
+**** SIMD OMP ****
+experiment, n, time (us), repetitions, Gflops/s, GByte/s
+simd omp, 100, 261965, 256, 2.82419, 22.5936
+simd omp, 200, 268735, 64, 2.75305, 22.0244
+simd omp, 500, 424632, 16, 2.72236, 21.7789
+simd omp, 1000, 426392, 4, 2.71112, 21.689
+simd omp, 5000, 2796174, 1, 2.58389, 20.6711
+
+
+----Experiment Over---- 
+
+**** SIMD ****
+experiment, n, time (us), repetitions, Gflops/s, GByte/s
+simd 4d, 100, 260644, 256, 2.83851, 22.7081
+simd 4d, 200, 274888, 64, 2.69142, 21.5314
+simd 4d, 500, 424268, 16, 2.72469, 21.7975
+simd 4d, 1000, 426930, 4, 2.7077, 21.6616
+simd 4d, 5000, 2802217, 1, 2.57832, 20.6265
+
+
+----Experiment Over---- 
+
+**** SIMD Large Vec ****
+experiment, n, time (us), repetitions, Gflops/s, GByte/s
+simd 8d, 100, 263999, 256, 2.80243, 22.4195
+simd 8d, 200, 270905, 64, 2.73099, 21.848
+simd 8d, 500, 430106, 16, 2.68771, 21.5017
+simd 8d, 1000, 426664, 4, 2.70939, 21.6751
+simd 8d, 5000, 2793026, 1, 2.5868, 20.6944
+
+
+----Experiment Over---- 
+
