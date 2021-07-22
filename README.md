@@ -1,1 +1,7 @@
-# K-Stencil Mean
+## K-Stencil Mean
+
+
+## Jacobi
+
+
+## Symmetric Gauss Sidel
