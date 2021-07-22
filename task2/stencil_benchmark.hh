@@ -100,7 +100,6 @@ public:
 void benchmark(int k, int blocksize) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
-  double time_factor = 1e6;
   std::vector<int> sizes = {100, 200, 500, 1000, 5000, 10000};
 
   std::cout << "Stencil Size: " << k << ", Block Size:" << blocksize;
@@ -118,7 +117,7 @@ void benchmark(int k, int blocksize) {
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
-    std::cout << "vanilla, " << n << ", " << d.second / time_factor << ", " << d.first << ", "
+    std::cout << "vanilla, " << n << ", " << d.second << ", " << d.first << ", "
               << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
@@ -137,7 +136,7 @@ void benchmark(int k, int blocksize) {
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
-    std::cout << "blocked, " << n << ", " << d.second / time_factor<< ", " << d.first << ", "
+    std::cout << "blocked, " << n << ", " << d.second << ", " << d.first << ", "
               << flops << ", " << flops * sizeof(NUMBER)  << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
@@ -156,7 +155,7 @@ void benchmark(int k, int blocksize) {
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
-    std::cout << "simd omp, " << n << ", " << d.second / time_factor << ", " << d.first
+    std::cout << "simd omp, " << n << ", " << d.second << ", " << d.first
               << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
@@ -177,7 +176,7 @@ void benchmark(int k, int blocksize) {
     StencilSIMD e(n, k, blocksize);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "simd 4d, " << n << ", " << d.second / time_factor << ", " << d.first << ", "
+    std::cout << "simd 4d, " << n << ", " << d.second << ", " << d.first << ", "
               << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
   std::cout << "\n\n----Experiment Over---- \n\n";
@@ -196,7 +195,7 @@ void benchmark(int k, int blocksize) {
       StencilSIMD_LargeVec e(n, k, blocksize);
       auto d = time_experiment(e);
       double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-      std::cout << "simd 8d, " << n << ", " << d.second / time_factor << ", " << d.first
+      std::cout << "simd 8d, " << n << ", " << d.second << ", " << d.first
                 << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
     } else {
       std::cout << "Stencil smaller than vector size. Skipping..." << std::endl;
