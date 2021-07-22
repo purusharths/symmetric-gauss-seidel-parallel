@@ -1,0 +1,1 @@
+# K-Stencil Mean
