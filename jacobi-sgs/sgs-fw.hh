@@ -25,7 +25,8 @@ void forward_gauss_sidel(int n, int k, double *grid, double *local_mean) {
               (ll == mm) ? 50
                          : std::pow(std::max(std::abs(ll), std::abs(mm)), -2);
           std::cout << "\n->" << mm << ", " << ll << ": " << std::endl;
-          if (ll < j || (ll == j && mm < i)) { // mm >= k && ll > i) {
+          if (mm < i || (mm == i && ll < j)) { // mm >= k && ll > i) {
+            // think here: which array
             // B+
             std::cout << grid[ll * n + mm] << " B ";
             // sum += alpha * local_mean[ll * n + mm];
