@@ -2,7 +2,7 @@
 #include <iostream>
 #include <ostream>
 
-#include "jacobi_seq.hh"
+#include "jacobi.hh"
 #include "sgs-bw.hh"
 #include "sgs-fw.hh"
 #include "time_experiment.hh"

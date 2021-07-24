@@ -6,6 +6,6 @@
 
 int main(){
     forward_gauss_sidel();  
-    backward_gauss_sidel();
+    // backward_gauss_sidel();
 }
 

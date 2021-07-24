@@ -2,6 +2,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <algorithm>
 
 void jacobi_vanilla(int n, int k, int i_min, int i_max, int j_min, int j_max,
                     double *grid, double *computed_vals, double *alpha) {
@@ -60,6 +61,11 @@ int main() {
   for (int i = 0; i < SIZE; i++) {
     iter[i % p_size] += 1;
   }
+
+  std::reverse(iter.begin(), iter.end());
+  std::vector<std::tuple<int, int>> loop_domains;
+
+
   int val_start = 0;
   int val_end = 0;
   for (unsigned int j = 0; j < iter.size(); ++j) {
