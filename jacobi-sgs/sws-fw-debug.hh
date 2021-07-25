@@ -13,16 +13,16 @@ void forward_gauss_sidel(int n, int k, double *grid, double *local_mean) {
       int col_min = std::max(j - k, 0);
       int col_max = std::min(j + k, n - 1);
       std::cout << "\t rowrange: (" << col_min << ", " << col_max << ")\n\t"
-                << " colrange: (" << row_min << ", " << row_max << ")"
-                << std::endl;
-      for (int mm = row_min; mm <= row_max; mm++) { 
-        for (int ll = col_min; ll <= col_max; ll++) { 
+                << " colrange: (" << row_min << ", " << row_max << ") :    "
+                << grid[i * n + j] << std::endl;
+      for (int mm = row_min; mm <= row_max; mm++) {
+        for (int ll = col_min; ll <= col_max; ll++) {
           std::cout << "\n->" << mm << ", " << ll << ": " << std::endl;
           if (mm < i || (mm == i && ll < j)) { // mm >= k && ll > i) {
             // think here: which array
             // B+
-            sum += grid[ll*n + mm] ;
-            std::cout << grid[ll * n + mm] << " B ";
+            sum += grid[ll * n + mm];
+            std::cout << local_mean[ll * n + mm] << " B ";
             // sum += alpha * local_mean[ll * n + mm];
           } else {
             // A+

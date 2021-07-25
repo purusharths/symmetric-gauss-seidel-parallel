@@ -5,6 +5,8 @@
 #include "jacobi.hh"
 #include "sgs-bw.hh"
 #include "sgs-fw.hh"
+// #include "sws-fw-debug.hh"
+#include "sws-omp-fw.hh"
 #include "time_experiment.hh"
 #include "utilities.hh"
 
@@ -69,6 +71,13 @@ int main(int argc, char **argv) {
       local_mean[i1 * n + i0] = g(i0, i1);
     }
   }
+
+  for (int i1 = 0; i1 < n; i1++) {
+    for (int i0 = 0; i0 < n; i0++) {
+      local_mean[i1 * n + i0] = 0.0;
+    }
+  }
+
   // alpha (coefficient stencil)
   // for (int i = 0; i < 2 * k + 1; i++) {
   //   for (int j = 0; j < 2 * k + 1; j++) {
@@ -80,12 +89,14 @@ int main(int argc, char **argv) {
 
   // print the grid
   print_grid(grid, n);
+  print_grid(local_mean, n);
 
   // stencil_mean_vanilla(n, k, grid, local_mean);
   
   // jacobi_vanilla(n, k, iterations ,grid, local_mean, alpha);
   // jacobi_omp(n, k, iterations ,grid, local_mean, alpha);
-  forward_gauss_sidel(n, k, grid, local_mean);
+  // forward_gauss_sidel(n, k, grid, local_mean);
+  forward_gauss_sidel_omp(n, k, grid, local_mean);
   // backward_gauss_sidel(n, k, grid, local_mean);
 
   // stencil_mean_blocked(n, k, grid, local_mean, blocksize);
