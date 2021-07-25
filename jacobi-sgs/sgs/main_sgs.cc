@@ -3,9 +3,11 @@
 #include <ostream>
 
 #include "sgs-bw.hh"
-#include "sgs-fw.hh"
+// #include "sgs-fw.hh"
 // #include "debug-sws-fw.hh"
-// #include "sws-omp-fw.hh"
+#include "sgs-omp-fw.hh"
+// #include "fw-sgs-thread.hh"
+// #include "sws-omp-vec.hh"
 #include "time_experiment.hh"
 #include "utilities.hh"
 
@@ -90,10 +92,10 @@ int main(int argc, char **argv) {
   print_grid(grid, n);
   // print_grid(local_mean, n);
 
-  forward_gauss_sidel(n, k, grid, local_mean);
-  print_grid(local_mean, n);
-  backward_gauss_sidel(n, k, local_mean, local_mean);
-  // forward_gauss_sidel_omp(n, k, grid, local_mean);
+  // forward_gauss_sidel(n, k, grid, local_mean);
+  // print_grid(local_mean, n);
+  // backward_gauss_sidel(n, k, local_mean, local_mean);
+  forward_gauss_sidel_omp(n, k, grid, local_mean);
   print_grid(local_mean, n);
   delete [] grid;
   delete [] local_mean;
