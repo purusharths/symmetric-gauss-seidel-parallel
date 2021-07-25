@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
       // #pragma omp parallel for shared(p, q)
       for (int l = 1; l <= loop_count; l++) {
         usleep(100); // usleep stands in for real work
-                     // #pragma omp critical
+#pragma omp critical
         {
           std::cout << grid[p * n + q] << " "; //<< "  (" << tid << ")\n";
           p = p - 1;
