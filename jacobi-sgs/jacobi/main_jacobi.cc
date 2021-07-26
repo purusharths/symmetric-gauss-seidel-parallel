@@ -39,24 +39,12 @@ int main(int argc, char **argv) {
   double *local_mean = new (std::align_val_t(64)) double[n * n];
   double *alpha = new double[stencil_size * stencil_size];
 
-  // fill boundary and initial values
-  auto g = [&](int i0, int i1) {
-    return (i0 > 0 && i0 < n - 1 && i1 > 0 && i1 < n - 1)
-               //  ? i0+i1 : ((double)(i0+i1))/n; };
-               ? i0 + i1
-               : i0 * i1 + 5 * i1 + 5 * i0;
-  }; //
-
   // fill alpha (coefficient stencil)
   coeff_stencil(k, alpha);
-
-
   // fill the grid
   fill_array(n, grid);
-
   // fill the local_mean
   fill_array(n, local_mean, true);
-
 
   // print the grid
   // print_grid(grid, n);
