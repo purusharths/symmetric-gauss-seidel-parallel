@@ -3,14 +3,16 @@
 #include <iostream>
 #include <omp.h>
 
-void backward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean) {
-
+void backward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean,
+                              double *alpha) {
+  std::cout << "Backwards";
+  int K = (2 * k + 1);
   for (int i = n - 1; i >= 0; i--) {           // i loop
     for (int c = n - 1; c >= n - k - 1; c--) { // c loop
 
       int loop_count = 1 + std::min(n - 1 - i, (c / (k + 1)));
 
-#pragma omp parallel for
+      // #pragma omp parallel for
       for (int l = 0; l < loop_count; l++) {
         int p = i + l;
         int q = c - (l * (k + 1));
@@ -24,17 +26,17 @@ void backward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean) {
 
         for (int mm = row_min; mm <= row_max; mm++) {
           for (int ll = col_min; ll <= col_max; ll++) {
-
+            double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             if (mm > p || (mm == p && ll > q)) {
               // B -
-              sum += local_mean[ll * n + mm];
+              sum += alph * local_mean[ll * n + mm];
             } else {
               // A -
-              sum += grid[ll * n + mm];
+              sum += alph * grid[ll * n + mm];
             }
           }
         }
-
+// #pragma omp critical
         local_mean[q * n + p] = static_cast<double>(sum); //
       }
     }
@@ -43,7 +45,7 @@ void backward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean) {
   for (int c = n - k - 1; c >= 0; c--) {
     int loop_count = 1 + std::min(c, (k + 1));
     int i = 0;
-    #pragma omp parallel for
+    // #pragma omp for
     for (int l = 0; l < loop_count; l++) {
       int p = i + l;
       int q = c - (l * (k + 1));
@@ -57,17 +59,17 @@ void backward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean) {
 
       for (int mm = row_min; mm <= row_max; mm++) {
         for (int ll = col_min; ll <= col_max; ll++) {
-
+          double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
           if (mm > p || (mm == p && ll > q)) {
             // B -
-            sum += local_mean[ll * n + mm];
+            sum += alph * local_mean[ll * n + mm];
           } else {
             // A -
-            sum += grid[ll * n + mm];
+            sum += alph * grid[ll * n + mm];
           }
         }
       }
-
+// #pragma omp critical
       local_mean[q * n + p] = static_cast<double>(sum); //
     }
   }
