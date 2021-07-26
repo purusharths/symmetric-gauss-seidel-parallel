@@ -45,6 +45,8 @@ void jacobi_omp(int n, int k, int iterations, double *grid,
                 double *computed_vals, double *alpha) {
   double *uold = grid;
   double *unew = computed_vals;
+  int K = (2 * k + 1);
+
   for (int iter = 0; iter < iterations; iter++) {
 #pragma omp parallel for
     for (int i = 0; i < n; i++) {
@@ -59,7 +61,6 @@ void jacobi_omp(int n, int k, int iterations, double *grid,
         int c = col_max - col_min;
         int r = row_max - row_min;
         int size = (c + 1) * (r + 1);
-        int K = (2 * k + 1);
 
         for (int mm = row_min; mm <= row_max; mm++) {
 #pragma omp simd reduction(+ : sum)
