@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "jacobi_seq.hh"
+#include "jacobi.hh"
 #include "time_experiment.hh"
 #include "utilities.hh"
 
