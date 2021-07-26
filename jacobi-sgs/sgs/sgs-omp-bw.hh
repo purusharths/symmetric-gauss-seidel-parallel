@@ -5,7 +5,7 @@
 
 void backward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
                               double *alpha) {
-  std::cout << "Backwards";
+  // std::cout << "Backwards";
   double *grid = uold;
   double *local_mean = unew;  
   int K = (2 * k + 1);

@@ -5,10 +5,10 @@
 
 void forward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
                              double *alpha) {
+  // std::cout << "Forward";                               
   double *grid = uold;
   double *local_mean = unew;
   int K = (2 * k + 1);
-  std::cout << "Forward";
   for (int i = 0; i < n; i++) {       // i loop
     for (int c = 0; c < k + 1; c++) { // c loop
 

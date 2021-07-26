@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
   int blocksize;
   int iterations;
   if (argc < 2 || argc > 4) {
-    std::cout << "usage: ./sgs_omp <grid size> <stencil size (k)> <iterations>"
+    std::cout << "usage: ./sgs <grid size> <stencil size (k)> <iterations>"
               << std::endl;
     exit(1);
   }
@@ -29,12 +29,13 @@ int main(int argc, char **argv) {
   } else {
     iterations = 100;
   }
-  std::cout << "Iterations: " << iterations;
 
   if (k > n) {
     std::cout << "Stencil Size must be smaller than Matrix Size" << std::endl;
     exit(1);
   }
+  
+  // std::cout << "Iterations: " << iterations;
 
   int stencil_size = 2 * k + 1;
   double *grid = new (std::align_val_t(64)) double[n * n];
@@ -68,20 +69,18 @@ int main(int argc, char **argv) {
   // print the grid
   // print_grid(grid, n);
   // print_grid(local_mean, n);
-  int iter;
-  while (iter < iterations) {
+  for(int i = 0; i < iterations; i++){
     forward_gauss_sidel_omp(n, k, grid, local_mean, alpha);
     backward_gauss_sidel_omp(n, k, local_mean, grid, alpha);
-    iter++;
   }
 
   if (local_mean != grid) {
     std::swap(grid, local_mean);
   }
 
-  // print_grid(grid, n);
-  // std::cout << "Final Matrix:";
-  // print_grid(local_mean, n);
+  print_grid(grid, n);
+  std::cout << "Final Matrix:";
+  print_grid(local_mean, n);
 
   delete[] grid;
   delete[] local_mean;
