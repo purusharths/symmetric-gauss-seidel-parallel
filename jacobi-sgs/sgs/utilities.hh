@@ -25,15 +25,16 @@ void fill_array(int n, double *grid){
   }               
 }
 
-void coeff_stencil(int k, double *alpha){
+void coeff_stencil(int k, double *alpha) {
   int stencil_size = 2 * k + 1;
+  double m = 50 + ((stencil_size * stencil_size) - 1);
   for (int i = 0; i < stencil_size; i++) {
     for (int j = 0; j < stencil_size; j++) {
       if (i == k && j == k) {
-        alpha[i * stencil_size + j] = 50;
+        alpha[i * stencil_size + j] = 50 / m;
       } else {
         alpha[i * stencil_size + j] =
-            std::pow(std::max(std::abs(k - i), std::abs(k - j)), -2);
+            std::pow(std::max(std::abs(k - i), std::abs(k - j)), -2) / m;
       }
     }
   }
