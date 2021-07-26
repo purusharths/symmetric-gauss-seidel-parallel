@@ -67,22 +67,22 @@ int main(int argc, char **argv) {
   }
 
   // print the grid
-  print_grid(grid, n);
+  // print_grid(grid, n);
   // print_grid(local_mean, n);
   for (int i = 0; i < iterations; i++) {
-    forward_gauss_sidel(n, k, grid, local_mean, alpha);
-    backward_gauss_sidel(n, k, local_mean, grid, alpha);
+    forward_gauss_sidel(n, k, grid, alpha);
+    backward_gauss_sidel(n, k, grid, alpha);
     // std::swap(grid, local_mean);
   }
 
-  if (local_mean != grid) {
-    std::swap(grid, local_mean);
-  }
-
+  // if (local_mean != grid) {
+  //   std::swap(grid, local_mean);
+  // }
+  print_grid(grid, n);
 
 // if condition  
 
-  print_grid(local_mean, n);
+  // print_grid(local_mean, n);
   
   // print_grid(local_mean, n);
   delete[] grid;

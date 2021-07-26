@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-void forward_gauss_sidel(int n, int k, double *grid, double *locaal_mean,
+void forward_gauss_sidel(int n, int k, double *grid,
                          double *alpha) {
   // std::cout << "Vanilla GS" << std::endl;
   int K = (2 * k + 1);

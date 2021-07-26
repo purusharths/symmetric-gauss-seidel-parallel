@@ -86,7 +86,9 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
     for (int i = n - 1; i >= 0; i--) {           // i loop
       for (int c = n - 1; c >= n - k - 1; c--) { // c loop
 
-        int loop_count = 1 + std::min(n - 1 - i, (c / (k + 1)));
+        // int loop_count = 1 + std::min(n - 1 - i, (c / (k + 1)));
+            int loop_count = 1 + std::floor(c / (k + 1));
+
 
 #pragma omp parallel for
         for (int l = 0; l < loop_count; l++) {

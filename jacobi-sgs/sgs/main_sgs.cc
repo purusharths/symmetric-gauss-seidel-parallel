@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
 
   int stencil_size = 2 * k + 1;
   double *grid = new (std::align_val_t(64)) double[n * n];
-  double *local_mean = new (std::align_val_t(64)) double[n * n];
+  // double *local_mean = new (std::align_val_t(64)) double[n * n];
   double *alpha = new double[stencil_size * stencil_size];
 
   // fill boundary and initial values
@@ -60,12 +60,6 @@ int main(int argc, char **argv) {
     }
   }
 
-  for (int i1 = 0; i1 < n; i1++) {
-    for (int i0 = 0; i0 < n; i0++) {
-      local_mean[i1 * n + i0] = 0.0;
-    }
-  }
-
   // print the grid
   // print_grid(grid, n);
   // print_grid(local_mean, n);
@@ -83,6 +77,6 @@ int main(int argc, char **argv) {
   // print_grid(local_mean, n);
  
   delete[] grid;
-  delete[] local_mean;
+  // delete[] local_mean;
   delete[] alpha;
 }

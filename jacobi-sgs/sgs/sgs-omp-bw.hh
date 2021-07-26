@@ -45,7 +45,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold,
   }
 
   for (int c = n - k - 1; c >= 0; c--) {
-    int loop_count = 1 + std::min(c, (k + 1));
+    int loop_count = 1 + std::floor(c / (k + 1));
     int i = 0;
     #pragma omp for
     for (int l = 0; l < loop_count; l++) {
