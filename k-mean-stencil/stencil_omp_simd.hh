@@ -14,7 +14,7 @@ void stencil_omp_simd(int n, int k, double *grid, double *local_mean,
       // std::cout << " \nBlock: " << points << "\n";
       for (int blockRow = i; blockRow < i + blocksize; blockRow++) {
         for (int blockCol = j; blockCol < j + blocksize; blockCol++) {
-          double sum = 0, points = 0;
+          double sum = 0; //, points = 0;
           int col_max = std::min(blockCol + k, n - 1);
           int col_min = std::max(blockCol - k, 0);
           int row_max = std::min(blockRow + k, n - 1);

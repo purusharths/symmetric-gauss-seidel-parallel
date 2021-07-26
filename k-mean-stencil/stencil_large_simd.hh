@@ -38,35 +38,35 @@ void stencil_simd_large_vec(int n, int k, double *grid, double *local_mean,
           int ll = std::max(blockRow - k, 0);
           // for (int mm = std::max(blockCol - k, 0); mm <= std::min(blockCol +
           // k, n - 1); mm++) {
-          for (int mm = col_min; mm <= col_max; mm++) {
+          for (int mm = row_min; mm <= row_max; mm++) {
             int a;
-            Vec8d sum1(0);
+            Vec8d sum1(0); 
 
             for (a = 0; a < regularpart; a += vectorsize) {
-              Vec8d temp(grid[((row_min + a) * n) + mm],
-                         grid[((row_min + (a + 1)) * n) + mm],
-                         grid[((row_min + (a + 2)) * n) + mm],
-                         grid[((row_min + (a + 3)) * n) + mm],
-                         grid[((row_min + (a + 4)) * n) + mm],
-                         grid[((row_min + (a + 5)) * n) + mm],
-                         grid[((row_min + (a + 6)) * n) + mm],
-                         grid[((row_min + (a + 7)) * n) + mm]);
+              Vec8d temp(grid[((col_min + a) * n) + mm],
+                         grid[((col_min + (a + 1)) * n) + mm],
+                         grid[((col_min + (a + 2)) * n) + mm],
+                         grid[((col_min + (a + 3)) * n) + mm],
+                         grid[((col_min + (a + 4)) * n) + mm],
+                         grid[((col_min + (a + 5)) * n) + mm],
+                         grid[((col_min + (a + 6)) * n) + mm],
+                         grid[((col_min + (a + 7)) * n) + mm]);
               sum1 += temp;
             }
 
             if (datasize - a >= 4) {
               // get four more numbers
-              Vec4d sum2(grid[((row_min + (a + 8)) * n) + mm],
-                         grid[((row_min + (a + 9)) * n) + mm],
-                         grid[((row_min + (a + 10)) * n) + mm],
-                         grid[((row_min + (a + 11)) * n) + mm]);
+              Vec4d sum2(grid[((col_min + (a + 8)) * n) + mm],
+                         grid[((col_min + (a + 9)) * n) + mm],
+                         grid[((col_min + (a + 10)) * n) + mm],
+                         grid[((col_min + (a + 11)) * n) + mm]);
               // sum2.load(mydata + i);
               a += 4;
               sum += horizontal_add(sum2);
             }
 
             for (; a < datasize; a++) {
-              sum += grid[(row_min + a) * n + mm];
+              sum += grid[(col_min + a) * n + mm];
             }
             sum += horizontal_add(sum1);
           }

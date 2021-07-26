@@ -21,8 +21,8 @@ void stencil_mean_blocked(int n, int k, double *grid, double *local_mean, int bl
 
           double sum = 0;
         //   std::cout << "(" << blockRow << ", " << blockCol << "): ";
-          for (int mm = col_min; mm <= col_max; mm++) {
-            for (int ll = row_min; ll <= row_max; ll++) {
+          for (int mm = row_min; mm <= row_max; mm++) {
+            for (int ll = col_min; ll <= col_max; ll++) {
               sum += grid[ll * n + mm];
               // std::cout << ll << ", " << mm << " | ";
               // points++;
