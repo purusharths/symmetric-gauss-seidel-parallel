@@ -2,7 +2,7 @@
 #include <iostream>
 #include <ostream>
 
-#include "fw_bw.hh"
+// #include "fw_bw.hh"
 #include "sgs-omp-bw.hh"
 #include "sgs-omp-fw.hh"
 
@@ -69,22 +69,20 @@ int main(int argc, char **argv) {
   // print_grid(grid, n);
   // print_grid(local_mean, n);
   int iter;
-  // while (iter < iterations) {
-    // std::cout << "fw";
-    // forward_gauss_sidel_omp(n, k, grid, local_mean, alpha);
-    gauss_sidel_omp(n, k, iterations, grid, local_mean, alpha);
-    // print_grid(local_mean, n);
-    // std::swap(grid, local_mean);
-    // std::cout << "bw";
-    // backward_gauss_sidel_omp(n, k, grid, local_mean, alpha);
-    // iter++;
-  // }
+  while (iter < iterations) {
+    forward_gauss_sidel_omp(n, k, grid, local_mean, alpha);
+    backward_gauss_sidel_omp(n, k, local_mean, grid, alpha);
+    iter++;
+  }
 
-  // if (local_mean != grid) {
-  //   std::swap(grid, local_mean);
-  // }
+  if (local_mean != grid) {
+    std::swap(grid, local_mean);
+  }
 
-  print_grid(local_mean, n);
+  // print_grid(grid, n);
+  // std::cout << "Final Matrix:";
+  // print_grid(local_mean, n);
+
   delete[] grid;
   delete[] local_mean;
   delete[] alpha;

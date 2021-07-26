@@ -3,8 +3,10 @@
 #include <iostream>
 #include <omp.h>
 
-void forward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean,
+void forward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
                              double *alpha) {
+  double *grid = uold;
+  double *local_mean = unew;
   int K = (2 * k + 1);
   std::cout << "Forward";
   for (int i = 0; i < n; i++) {       // i loop
@@ -24,7 +26,7 @@ void forward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean,
         int col_max = std::min(q + k, n - 1);
 
         for (int mm = row_min; mm <= row_max; mm++) {
-// #pragma omp simd reduction(+ : sum)
+          // #pragma omp simd reduction(+ : sum)
           for (int ll = col_min; ll <= col_max; ll++) {
             double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             // double alph = 1;
@@ -35,7 +37,7 @@ void forward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean,
             }
           }
         }
-        #pragma omp critical
+#pragma omp critical
         local_mean[q * n + p] = static_cast<double>(sum);
       }
     }
@@ -56,7 +58,7 @@ void forward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean,
       int col_max = std::min(q + k, n - 1);
 
       for (int mm = row_min; mm <= row_max; mm++) {
-// #pragma omp simd reduction(+ : sum)
+        // #pragma omp simd reduction(+ : sum)
         for (int ll = col_min; ll <= col_max; ll++) {
           double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
           // double alph = 1;
@@ -69,9 +71,10 @@ void forward_gauss_sidel_omp(int n, int k, double *grid, double *local_mean,
           }
         }
       }
-      #pragma omp critical
+#pragma omp critical
       local_mean[q * n + p] = static_cast<double>(sum);
     }
     // #pragma omp barrier
   }
+  // std::swap(uold, unew);
 }

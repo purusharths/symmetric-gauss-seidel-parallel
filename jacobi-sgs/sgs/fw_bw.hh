@@ -3,8 +3,8 @@
 #include <iostream>
 #include <omp.h>
 
-void gauss_sidel_omp(int n, int k, int iterations, double *grid, double *local_mean,
-                     double *alpha) {
+void gauss_sidel_omp(int n, int k, int iterations, double *grid,
+                     double *local_mean, double *alpha) {
   int K = (2 * k + 1);
   for (int i = 0; i < iterations; i++) {
     for (int i = 0; i < n; i++) {       // i loop
@@ -35,7 +35,6 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid, double *local_m
               }
             }
           }
-          // #pragma omp critical
           local_mean[q * n + p] = static_cast<double>(sum);
         }
       }
@@ -69,14 +68,10 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid, double *local_m
             }
           }
         }
-#pragma omp critical
         local_mean[q * n + p] = static_cast<double>(sum);
       }
-      // #pragma omp barrier
     }
-// end fw
-// end fw
-// end fw
+// end fw  // end fw
 // -------------------
 #pragma omp barrier
     // at the end of forward iteration
@@ -87,6 +82,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid, double *local_m
     // grid -> u^(1/2)
     // local_mean -> u^0 (will be overwritten by u^1)
 
+// start backward iteration
     for (int i = n - 1; i >= 0; i--) {           // i loop
       for (int c = n - 1; c >= n - k - 1; c--) { // c loop
 
@@ -121,7 +117,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid, double *local_m
         }
       }
     }
-
+// remaining top values
     for (int c = n - k - 1; c >= 0; c--) {
       int loop_count = 1 + std::min(c, (k + 1));
       int i = 0;
@@ -161,8 +157,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid, double *local_m
     // local_mean -> u^1/2
   }
 
-    if (local_mean != grid) {
+  if (local_mean != grid) {
     std::swap(grid, local_mean);
   }
-
 }

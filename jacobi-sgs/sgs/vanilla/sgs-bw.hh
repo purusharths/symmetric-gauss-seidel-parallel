@@ -1,10 +1,13 @@
 #pragma once
 #include <cmath>
 #include <iostream>
+#include <tuple>
 
-void backward_gauss_sidel(int n, int k, double *grid, double *local_mean,
+void backward_gauss_sidel(int n, int k, double *uold, double *unew,
                           double *alpha) {
   // std::cout << "Backward Gauss sidel" << std::endl;
+  double *grid = uold;
+  double *local_mean = unew;
   int K = (2 * k + 1);
   for (int i = n - 1; i >= 0; i--) {
     for (int j = n - 1; j >= 0; j--) {
@@ -34,4 +37,5 @@ void backward_gauss_sidel(int n, int k, double *grid, double *local_mean,
       // std::cout << sum << std::endl;
     }
   }
+  std::swap(uold, unew);
 }
