@@ -3,11 +3,11 @@
 #include <iostream>
 #include <omp.h>
 
-void forward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
+void forward_gauss_sidel_omp(int n, int k, double *uold,
                              double *alpha) {
   // std::cout << "Forward";                               
   double *grid = uold;
-  double *local_mean = unew;
+  // double *local_mean = unew;
   int K = (2 * k + 1);
   for (int i = 0; i < n; i++) {       // i loop
     for (int c = 0; c < k + 1; c++) { // c loop
@@ -31,14 +31,14 @@ void forward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
             double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             // double alph = 1;
             if (mm < p || (mm == p && ll < q)) { // B+
-              sum += alph * local_mean[ll * n + mm];
+              sum += alph * grid[ll * n + mm];
             } else { // A+
               sum += alph * grid[ll * n + mm];
             }
           }
         }
-#pragma omp critical
-        local_mean[q * n + p] = static_cast<double>(sum);
+// #pragma omp critical
+        grid[q * n + p] = static_cast<double>(sum);
       }
     }
   }
@@ -64,7 +64,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
           // double alph = 1;
           if (mm < p || (mm == p && ll < q)) {
             // B+
-            sum += alph * local_mean[ll * n + mm];
+            sum += alph * grid[ll * n + mm];
           } else {
             // A+
             sum += alph * grid[ll * n + mm];
@@ -72,7 +72,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
         }
       }
 #pragma omp critical
-      local_mean[q * n + p] = static_cast<double>(sum);
+      grid[q * n + p] = static_cast<double>(sum);
     }
     // #pragma omp barrier
   }

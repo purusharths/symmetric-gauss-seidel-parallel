@@ -4,7 +4,7 @@
 #include <omp.h>
 
 void gauss_sidel_omp(int n, int k, int iterations, double *grid,
-                     double *local_mean, double *alpha) {
+                     double *local_maean, double *alpha) {
   int K = (2 * k + 1);
   for (int i = 0; i < iterations; i++) {
     for (int i = 0; i < n; i++) {       // i loop
@@ -29,13 +29,13 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
               double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
               // double alph = 1;
               if (mm < p || (mm == p && ll < q)) { // B+
-                sum += alph * local_mean[ll * n + mm];
+                sum += alph * grid[ll * n + mm];
               } else { // A+
                 sum += alph * grid[ll * n + mm];
               }
             }
           }
-          local_mean[q * n + p] = static_cast<double>(sum);
+          grid[q * n + p] = static_cast<double>(sum);
         }
       }
     }
@@ -61,14 +61,14 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
             // double alph = 1;
             if (mm < p || (mm == p && ll < q)) {
               // B+
-              sum += alph * local_mean[ll * n + mm];
+              sum += alph * grid[ll * n + mm];
             } else {
               // A+
               sum += alph * grid[ll * n + mm];
             }
           }
         }
-        local_mean[q * n + p] = static_cast<double>(sum);
+        grid[q * n + p] = static_cast<double>(sum);
       }
     }
 // end fw  // end fw
@@ -77,7 +77,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
     // at the end of forward iteration
     // grid -> u^0
     // local_mean -> u^(1/2)
-    std::swap(grid, local_mean);
+    // std::swap(grid, local_mean);
     // Now:
     // grid -> u^(1/2)
     // local_mean -> u^0 (will be overwritten by u^1)
@@ -105,7 +105,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
               double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
               if (mm > p || (mm == p && ll > q)) {
                 // B -
-                sum += alph * local_mean[ll * n + mm];
+                sum += alph * grid[ll * n + mm];
               } else {
                 // A -
                 sum += alph * grid[ll * n + mm];
@@ -113,7 +113,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
             }
           }
           // #pragma omp critical
-          local_mean[q * n + p] = static_cast<double>(sum); //
+          grid[q * n + p] = static_cast<double>(sum); //
         }
       }
     }
@@ -138,7 +138,7 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
             double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             if (mm > p || (mm == p && ll > q)) {
               // B -
-              sum += alph * local_mean[ll * n + mm];
+              sum += alph * grid[ll * n + mm];
             } else {
               // A -
               sum += alph * grid[ll * n + mm];
@@ -146,18 +146,18 @@ void gauss_sidel_omp(int n, int k, int iterations, double *grid,
           }
         }
         // #pragma omp critical
-        local_mean[q * n + p] = static_cast<double>(sum); //
+        grid[q * n + p] = static_cast<double>(sum); //
       }
     }
 
     // grid-> u^1/2
     // local_mean -> u^1
-    std::swap(local_mean, grid);
+    // std::swap(local_mean, grid);
     //   grid->u^1
     // local_mean -> u^1/2
   }
 
-  if (local_mean != grid) {
-    std::swap(grid, local_mean);
-  }
+  // if (local_mean != grid) {
+  //   std::swap(grid, local_mean);
+  // }
 }

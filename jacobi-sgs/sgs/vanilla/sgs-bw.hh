@@ -7,7 +7,7 @@ void backward_gauss_sidel(int n, int k, double *uold, double *unew,
                           double *alpha) {
   // std::cout << "Backward Gauss sidel" << std::endl;
   double *grid = uold;
-  double *local_mean = unew;
+  // double *local_mean = unew;
   int K = (2 * k + 1);
   for (int i = n - 1; i >= 0; i--) {
     for (int j = n - 1; j >= 0; j--) {
@@ -24,7 +24,7 @@ void backward_gauss_sidel(int n, int k, double *uold, double *unew,
           double alph = alpha[(mm - (i - k)) * K + (ll - (j - k))];
           if (mm > i || (mm == i && ll > j)) {
             // B -
-            sum += alph * local_mean[ll * n + mm];
+            sum += alph * grid[ll * n + mm];
           } else {
             // A -
             sum += alph * grid[ll * n + mm];
@@ -32,10 +32,10 @@ void backward_gauss_sidel(int n, int k, double *uold, double *unew,
         }
       }
 
-      local_mean[j * n + i] =
+      grid[j * n + i] =
           static_cast<double>(sum); // / change to multiply
       // std::cout << sum << std::endl;
     }
   }
-  std::swap(uold, unew);
+  // std::swap(uold, unew);
 }

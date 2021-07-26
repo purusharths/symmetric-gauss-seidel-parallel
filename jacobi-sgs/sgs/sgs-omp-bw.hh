@@ -3,11 +3,11 @@
 #include <iostream>
 #include <omp.h>
 
-void backward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
+void backward_gauss_sidel_omp(int n, int k, double *uold, 
                               double *alpha) {
   // std::cout << "Backwards";
   double *grid = uold;
-  double *local_mean = unew;  
+  // double *local_mean = unew;  
   int K = (2 * k + 1);
   for (int i = n - 1; i >= 0; i--) {           // i loop
     for (int c = n - 1; c >= n - k - 1; c--) { // c loop
@@ -31,7 +31,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
             double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             if (mm > p || (mm == p && ll > q)) {
               // B -
-              sum += alph * local_mean[ll * n + mm];
+              sum += alph * grid[ll * n + mm];
             } else {
               // A -
               sum += alph * grid[ll * n + mm];
@@ -39,7 +39,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
           }
         }
 // #pragma omp critical
-        local_mean[q * n + p] = static_cast<double>(sum); //
+        grid[q * n + p] = static_cast<double>(sum); //
       }
     }
   }
@@ -64,7 +64,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
           double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
           if (mm > p || (mm == p && ll > q)) {
             // B -
-            sum += alph * local_mean[ll * n + mm];
+            sum += alph * grid[ll * n + mm];
           } else {
             // A -
             sum += alph * grid[ll * n + mm];
@@ -72,8 +72,8 @@ void backward_gauss_sidel_omp(int n, int k, double *uold, double *unew,
         }
       }
 // #pragma omp critical
-      local_mean[q * n + p] = static_cast<double>(sum); //
+      grid[q * n + p] = static_cast<double>(sum); //
     }
   }
-  std::swap(uold, unew);
+  // std::swap(uold, unew);
 }

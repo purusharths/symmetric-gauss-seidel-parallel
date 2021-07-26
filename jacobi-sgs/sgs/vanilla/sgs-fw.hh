@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-void forward_gauss_sidel(int n, int k, double *grid, double *local_mean,
+void forward_gauss_sidel(int n, int k, double *grid, double *locaal_mean,
                          double *alpha) {
   // std::cout << "Vanilla GS" << std::endl;
   int K = (2 * k + 1);
@@ -21,7 +21,7 @@ void forward_gauss_sidel(int n, int k, double *grid, double *local_mean,
           if (mm < i || (mm == i && ll < j)) { // mm >= k && ll > i) {
                                                // B+
             // std::cout << local_mean[ll * n + mm] << " " << ll << ", " << mm ;
-            sum += alph * local_mean[ll * n + mm];
+            sum += alph * grid[ll * n + mm];
           } else {
             // A+
             sum += alph * grid[ll * n + mm];
@@ -30,8 +30,8 @@ void forward_gauss_sidel(int n, int k, double *grid, double *local_mean,
       }
       // std::cout << std::endl;
 
-      local_mean[j * n + i] =
-          static_cast<double>(sum / points); // / change to multiply
+      grid[j * n + i] =
+          static_cast<double>(sum); // / change to multiply
     }
   }
 }
