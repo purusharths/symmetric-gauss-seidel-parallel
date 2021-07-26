@@ -23,9 +23,9 @@ void stencil_omp_simd(int n, int k, double *grid, double *local_mean,
           int o = row_max - row_min;
           int mn = (m + 1) * (o + 1);
           //   std::cout << "(" << blockRow << ", " << blockCol << "): ";
-          for (int mm = col_min; mm <= col_max; mm++) {
+          for (int mm = row_min; mm <= row_max; mm++) {
 #pragma omp simd reduction(+ : sum)
-            for (int ll = row_min; ll <= row_max; ll++) {
+            for (int ll = col_min; ll <= col_max; ll++) {
               sum += grid[ll * n + mm];
               // std::cout << ll << ", " << mm << " | ";
               // points++;
