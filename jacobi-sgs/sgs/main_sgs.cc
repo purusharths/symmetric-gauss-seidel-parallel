@@ -69,16 +69,16 @@ int main(int argc, char **argv) {
   // print_grid(grid, n);
   // print_grid(local_mean, n);
   int iter;
-  while (iter < iterations) {
+  // while (iter < iterations) {
     // std::cout << "fw";
     // forward_gauss_sidel_omp(n, k, grid, local_mean, alpha);
-    gauss_sidel_omp(n, k, grid, local_mean, alpha);
+    gauss_sidel_omp(n, k, iterations, grid, local_mean, alpha);
     // print_grid(local_mean, n);
     // std::swap(grid, local_mean);
     // std::cout << "bw";
     // backward_gauss_sidel_omp(n, k, grid, local_mean, alpha);
-    iter++;
-  }
+    // iter++;
+  // }
 
   // if (local_mean != grid) {
   //   std::swap(grid, local_mean);
