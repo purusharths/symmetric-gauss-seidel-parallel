@@ -15,7 +15,7 @@ namespace tt = boost::test_tools;
 
 BOOST_AUTO_TEST_CASE(test, *utf::tolerance(0.02)) {
   // framework::master_test_suite().argv[0] 
-  int n = 500; // 0 -> n = n+1
+  int n = 200; // 0 -> n = n+1
   int k = 10;
   int blocksize;
   int iterations = 200;

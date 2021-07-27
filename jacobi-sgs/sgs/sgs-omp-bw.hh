@@ -27,6 +27,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold,
         int col_max = std::min(q + k, n - 1);
 
         for (int mm = row_min; mm <= row_max; mm++) {
+          #pragma omp simd reduction (+:sum)
           for (int ll = col_min; ll <= col_max; ll++) {
             double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             if (mm > p || (mm == p && ll > q)) {
@@ -38,7 +39,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold,
             }
           }
         }
-// #pragma omp critical
+// #- pragma omp critical
         grid[q * n + p] = static_cast<double>(sum); //
       }
     }
@@ -60,6 +61,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold,
       int col_max = std::min(q + k, n - 1);
 
       for (int mm = row_min; mm <= row_max; mm++) {
+        #pragma omp simd reduction (+:sum)
         for (int ll = col_min; ll <= col_max; ll++) {
           double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
           if (mm > p || (mm == p && ll > q)) {
@@ -71,7 +73,7 @@ void backward_gauss_sidel_omp(int n, int k, double *uold,
           }
         }
       }
-// #pragma omp critical
+// # pragma omp critical
       grid[q * n + p] = static_cast<double>(sum); //
     }
   }

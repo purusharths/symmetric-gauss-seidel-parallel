@@ -14,7 +14,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold,
 
       int loop_count = std::min(i, (n - 1 - c) / (k + 1)) + 1;
 
-#pragma omp parallel for shared(K)
+#pragma omp parallel for
       for (int l = 0; l < loop_count; l++) {
         int p = i - (1 * l);
         int q = c + ((k + 1) * l);
@@ -26,7 +26,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold,
         int col_max = std::min(q + k, n - 1);
 
         for (int mm = row_min; mm <= row_max; mm++) {
-          // #pragma omp simd reduction(+ : sum)
+          #pragma omp simd reduction(+ : sum)
           for (int ll = col_min; ll <= col_max; ll++) {
             double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
             // double alph = 1;
@@ -46,7 +46,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold,
   for (int c = k + 1; c < n; c++) {
     int i = n - 1;
     int loop_count = 1 + std::floor((n - 1 - c) / (k + 1));
-#pragma omp parallel for shared(K)
+#pragma omp parallel for
     for (int l = 0; l < loop_count; l++) {
       int p = i - l;
       int q = c + (l * (k + 1));
@@ -58,7 +58,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold,
       int col_max = std::min(q + k, n - 1);
 
       for (int mm = row_min; mm <= row_max; mm++) {
-        // #pragma omp simd reduction(+ : sum)
+        #pragma omp simd reduction(+ : sum)
         for (int ll = col_min; ll <= col_max; ll++) {
           double alph = alpha[(mm - (p - k)) * K + (ll - (q - k))];
           // double alph = 1;
@@ -71,7 +71,7 @@ void forward_gauss_sidel_omp(int n, int k, double *uold,
           }
         }
       }
-#pragma omp critical
+// # pragma omp critical
       grid[q * n + p] = static_cast<double>(sum);
     }
     // #pragma omp barrier
