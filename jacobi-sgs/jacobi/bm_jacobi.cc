@@ -14,23 +14,26 @@ const int N = 32 * 1024 * 1024; // problem size
 // stencil_simd(n, k, grid, local_mean, blocksize);
 
 class JacobiVanilla { //: public Experiment {
-  int n, k;
+  int n, k, iterations;
   double *grid = new (std::align_val_t(64)) double[n * n];
   double *local_mean = new (std::align_val_t(64)) double[n * n];
   double *alpha = new double[(2 * k + 1) * (2 * k + 1)];
 
 public:
   // construct an experiment
-  JacobiVanilla(int n_, int k_) : n(n_), k(k_) {
+  JacobiVanilla(int n_, int k_, int iterations)
+      : n(n_), k(k_), iterations(iterations) {
     coeff_stencil(k, alpha);
     fill_array(n, grid);
     fill_array(n, local_mean);
   }
   // run an experiment; can be called several times
-  void run() const { jacobi_vanilla(n, k, 1, grid, local_mean, alpha); }
+  void run() const {
+    jacobi_vanilla(n, k, iterations, grid, local_mean, alpha);
+  }
   // report number of operations
   double operations() const {
-    return (n * n) * std::pow(2 * k + 1, 2) - 1 + 1;
+    return iterations * ((n * n) * std::pow(2 * k + 1, 2) - 1 + 1);
   } // no operations
   ~JacobiVanilla() {
     delete[] grid;
@@ -41,23 +44,24 @@ public:
 // ---------------------------------------------------------------------------------
 
 class Jacobi_OMP { //: public Experiment {
-  int n, k, blocked;
+  int n, k, iterations;
   double *grid = new (std::align_val_t(64)) double[n * n];
   double *local_mean = new (std::align_val_t(64)) double[n * n];
   double *alpha = new double[(2 * k + 1) * (2 * k + 1)];
 
 public:
   // construct an experiment
-  Jacobi_OMP(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {
+  Jacobi_OMP(int n_, int k_, int iterations)
+      : n(n_), k(k_), iterations(iterations) {
     coeff_stencil(k, alpha);
     fill_array(n, grid);
     fill_array(n, local_mean);
   }
   // run an experiment; can be called several times
-  void run() const { jacobi_omp(n, k, 1, grid, local_mean, alpha); }
+  void run() const { jacobi_omp(n, k, iterations, grid, local_mean, alpha); }
   // report number of operations
   double operations() const {
-    return (n * n) * std::pow(2 * k + 1, 2) - 1 + 1;
+    return iterations * ((n * n) * std::pow(2 * k + 1, 2) - 1 + 1);
   } // no operations
   ~Jacobi_OMP() {
     delete[] grid;
@@ -69,7 +73,7 @@ public:
 
 // ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-void benchmark(int k, int blocksize = 1) {
+void benchmark(int k, int iterations = 100) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
@@ -81,7 +85,7 @@ void benchmark(int k, int blocksize = 1) {
   std::cout << "experiment,n,time,repetitions,Gflops/s,GByte/s" << std::endl;
   for (auto n : sizes) {
 
-    JacobiVanilla e(n, k);
+    JacobiVanilla e(n, k, iterations);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
@@ -97,7 +101,7 @@ void benchmark(int k, int blocksize = 1) {
 
   for (auto n : sizes) {
 
-    Jacobi_OMP e(n, k, blocksize);
+    Jacobi_OMP e(n, k, iterations);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 

@@ -35,7 +35,8 @@ public:
   }
   // report number of operations
   double operations() const {
-    return (n * n) * ((std::pow(2 * k + 1, 2) - 1) * (2 * k + 1));
+    // return (n * n) * ((std::pow(2 * k + 1, 2) - 1) * (2 * k + 1));
+    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) + 1, 2);
   } // no operations
   ~SGS_Sequential() {
     delete[] grid;
@@ -64,7 +65,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return (n * n) * std::pow(2 * k + 1, 2) + 1;
+    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) + 1, 2);
   } // no operations
   ~SGS_Vanilla() {
     delete[] grid;
@@ -97,7 +98,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return (n * n) * std::pow(2 * k + 1, 2) + 1;
+    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) + 1, 2);
   } // no operations
   ~SGS_OMP() {
     delete[] grid;
