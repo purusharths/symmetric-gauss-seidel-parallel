@@ -77,9 +77,8 @@ void benchmark(int k, int blocksize = 1) {
 
   std::cout << "Stencil Size: " << k << ", ";
 
-  std::cout << "\n**** Vanilla ****\n";
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  // std::cout << "\n**** Vanilla ****\n";
+  std::cout << "experiment,n,time,repetitions,Gflops/s,GByte/s" << std::endl;
   for (auto n : sizes) {
 
     JacobiVanilla e(n, k);
@@ -90,13 +89,12 @@ void benchmark(int k, int blocksize = 1) {
               << d.first << ", " << flops << ", " << flops * sizeof(NUMBER)
               << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
 
-  std::cout << "**** OMP ****\n";
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  // std::cout << "**** OMP ****\n";
+
   for (auto n : sizes) {
 
     Jacobi_OMP e(n, k, blocksize);
@@ -107,7 +105,7 @@ void benchmark(int k, int blocksize = 1) {
               << d.first << ", " << flops << ", " << flops * sizeof(NUMBER)
               << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
 }

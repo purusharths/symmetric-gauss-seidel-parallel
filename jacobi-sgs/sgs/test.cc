@@ -14,6 +14,7 @@ namespace utf = boost::unit_test;
 namespace tt = boost::test_tools;
 
 BOOST_AUTO_TEST_CASE(test, *utf::tolerance(0.02)) {
+  // framework::master_test_suite().argv[0] 
   int n = 200; // 0 -> n = n+1
   int k = 10;
   int blocksize;
@@ -38,7 +39,7 @@ BOOST_AUTO_TEST_CASE(test, *utf::tolerance(0.02)) {
   }
 
   for (int i = 0; i < n*n; i++) {
-    BOOST_TEST(grid_omp[i] == grid_van[i], tt::tolerance(0.5));
+    BOOST_TEST(grid_omp[i] == grid_van[i], tt::tolerance(0.2));
   }
   //   BOOST_TEST(x == y); // irrelevant by default
 

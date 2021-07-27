@@ -10,7 +10,7 @@ for stencil,block in list(itertools.product(stencil_size, block_size)):
     popen = subprocess.Popen(args, stdout=subprocess.PIPE)
     popen.wait()
     output = popen.stdout.read()
-    with open("benchmark_results/{}_stencil_{}_block".format(stencil, block),"w+") as f:
+    with open("benchmark_results/{}_stencil_{}_block.csv".format(stencil, block),"w+") as f:
         f.write(output.decode('ascii'))
     print("Done")
 

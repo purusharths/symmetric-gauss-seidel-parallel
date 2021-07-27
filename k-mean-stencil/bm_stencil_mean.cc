@@ -2,10 +2,12 @@
 #include <iostream>
 #include <vector>
 
-#include "stencil_local_mean_kernel.hh"
-#include "stencil_mean_blocked.hh"
+#include "stencil_vanilla.hh"
+#include "stencil_blocked.hh"
 #include "stencil_simd.hh"
+#include "stencil_omp_simd.hh"
 #include "time_experiment.hh"
+#include "utilities.hh"
 
 using NUMBER = double;
 const int N = 32 * 1024 * 1024; // problem size
@@ -21,7 +23,14 @@ class StencilVanilla { //: public Experiment {
 
 public:
   // construct an experiment
-  StencilVanilla(int n_, int k_) : n(n_), k(k_) {}
+  StencilVanilla(int n_, int k_) : n(n_), k(k_) {
+    fill_array(n, grid);
+    fill_array(n, local_mean);
+  }
+  ~StencilVanilla(){
+    delete [] grid;
+    delete [] local_mean;
+  }
   // run an experiment; can be called several times
   void run() const { stencil_mean_vanilla(n, k, grid, local_mean); }
   // report number of operations
@@ -38,7 +47,14 @@ class StencilBlocked { //: public Experiment {
 
 public:
   // construct an experiment
-  StencilBlocked(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {}
+  StencilBlocked(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {
+    fill_array(n, grid);
+    fill_array(n, local_mean);
+  }
+  ~StencilBlocked(){
+    delete [] grid;
+    delete [] local_mean;
+  }
   // run an experiment; can be called several times
   void run() const { stencil_mean_blocked(n, k, grid, local_mean, blocked); }
   // report number of operations
@@ -55,7 +71,14 @@ class StencilSIMD_OMP { //: public Experiment {
 
 public:
   // construct an experiment
-  StencilSIMD_OMP(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {}
+  StencilSIMD_OMP(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {
+    fill_array(n, grid);
+    fill_array(n, local_mean);
+  }
+  ~StencilSIMD_OMP(){
+    delete [] grid;
+    delete [] local_mean;
+  }
   // run an experiment; can be called several times
   void run() const { stencil_simd(n, k, grid, local_mean, blocked); }
   // report number of operations
@@ -71,7 +94,14 @@ class StencilSIMD { //: public Experiment {
 
 public:
   // construct an experiment
-  StencilSIMD(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {}
+  StencilSIMD(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {
+    fill_array(n, grid);
+    fill_array(n, local_mean);
+  }
+  ~StencilSIMD(){
+    delete [] grid;
+    delete [] local_mean;
+  }
   // run an experiment; can be called several times
   void run() const { stencil_simd(n, k, grid, local_mean, blocked); }
   // report number of operations
@@ -87,7 +117,14 @@ class StencilSIMD_LargeVec { //: public Experiment {
 
 public:
   // construct an experiment
-  StencilSIMD_LargeVec(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {}
+  StencilSIMD_LargeVec(int n_, int k_, int b) : n(n_), k(k_), blocked(b) {
+    fill_array(n, grid);
+    fill_array(n, local_mean);
+  }
+  ~StencilSIMD_LargeVec(){
+    delete [] grid;
+    delete [] local_mean;
+  }
   // run an experiment; can be called several times
   void run() const { stencil_simd(n, k, grid, local_mean, blocked); }
   // report number of operations
@@ -100,13 +137,12 @@ public:
 void benchmark(int k, int blocksize) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
-  std::vector<int> sizes = {100, 200, 500, 1000, 5000, 10000};
+  double time_factor = 1e6;
+  std::vector<int> sizes = {100, 200};
 
-  std::cout << "Stencil Size: " << k << ", Block Size:" << blocksize;
-
-  std::cout << "\n**** Vanilla ****\n";
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  std::cout << "Stencil Size: " << k << ", Block Size:" << blocksize << std::endl;
+  // std::cout << "**** Vanilla ****\n";
+  std::cout << "experiment,n,time,repetitions,Gflops/s,GByte/s" << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -117,15 +153,15 @@ void benchmark(int k, int blocksize) {
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
-    std::cout << "vanilla, " << n << ", " << d.second << ", " << d.first << ", "
+    std::cout << "vanilla, " << n << ", " << d.second / time_factor << ", " << d.first << ", "
               << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
-  std::cout << "**** Blocked ****\n";
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  // std::cout << "**** Blocked ****\n";
+  // std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            // << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -136,15 +172,15 @@ void benchmark(int k, int blocksize) {
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
-    std::cout << "blocked, " << n << ", " << d.second << ", " << d.first << ", "
-              << flops << ", " << flops * sizeof(NUMBER)  << std::endl;
+    std::cout << "blocked, " << n << ", " << d.second / time_factor << ", " << d.first << ", "
+              << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
   // ---------------------------------------------------------------------------------
 
-  std::cout << "**** SIMD OMP ****\n";
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  // std::cout << "**** SIMD OMP ****\n";
+  // std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            // << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -155,17 +191,17 @@ void benchmark(int k, int blocksize) {
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
 
-    std::cout << "simd omp, " << n << ", " << d.second << ", " << d.first
+    std::cout << "simd omp, " << n << ", " << d.second / time_factor<< ", " << d.first
               << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
 
-  std::cout << "**** SIMD ****\n";
+  // std::cout << "**** SIMD ****\n";
 
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  // std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            // << std::endl;
 
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
@@ -176,16 +212,16 @@ void benchmark(int k, int blocksize) {
     StencilSIMD e(n, k, blocksize);
     auto d = time_experiment(e);
     double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-    std::cout << "simd 4d, " << n << ", " << d.second << ", " << d.first << ", "
+    std::cout << "simd 4d, " << n << ", " << d.second / time_factor<< ", " << d.first << ", "
               << flops << ", " << flops * sizeof(NUMBER) << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
 
-  std::cout << "**** SIMD Large Vec ****\n";
-  std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
-            << std::endl;
+  // std::cout << "**** SIMD Large Vec ****\n";
+  // std::cout << "experiment, n, time (us), repetitions, Gflops/s, GByte/s"
+            // << std::endl;
   for (auto n : sizes) {
     if ((n) % blocksize != 0) {
       std::cout << "Blocksize must be a multiple of n" << std::endl;
@@ -195,7 +231,7 @@ void benchmark(int k, int blocksize) {
       StencilSIMD_LargeVec e(n, k, blocksize);
       auto d = time_experiment(e);
       double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-      std::cout << "simd 8d, " << n << ", " << d.second << ", " << d.first
+      std::cout << "simd 8d, " << n << ", " << d.second / time_factor<< ", " << d.first
                 << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
     } else {
       std::cout << "Stencil smaller than vector size. Skipping..." << std::endl;
@@ -205,5 +241,12 @@ void benchmark(int k, int blocksize) {
     //           << " " << flops << " Gflops/s"
     //           << " " << flops * sizeof(NUMBER) << " GByte/s" << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
+}
+
+int main(int argc, char **argv) {
+  int k, blocksize;
+  sscanf(argv[1], "%d", &k);
+  sscanf(argv[2], "%d", &blocksize);
+  benchmark(k, blocksize);
 }
