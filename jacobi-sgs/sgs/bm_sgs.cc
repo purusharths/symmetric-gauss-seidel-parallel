@@ -12,7 +12,7 @@
 
 using NUMBER = double;
 const int N = 32 * 1024 * 1024; // problem size
-
+// double cost =
 class SGS_Sequential { //: public Experiment {
   int n, k, iterations;
   double *grid = new (std::align_val_t(64)) double[n * n];
@@ -36,7 +36,8 @@ public:
   // report number of operations
   double operations() const {
     // return (n * n) * ((std::pow(2 * k + 1, 2) - 1) * (2 * k + 1));
-    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) + 1, 2);
+    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) - 1 * 2, 2);
+    // n*n size, 2k+1^2-1 addition, 2k+1 mult, 2 times: for backward iter
   } // no operations
   ~SGS_Sequential() {
     delete[] grid;
@@ -65,7 +66,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) + 1, 2);
+    return iterations * std::pow((n * n) * (std::pow(2 * k + 1, 2) - 1) * 2, 2);
   } // no operations
   ~SGS_Vanilla() {
     delete[] grid;
@@ -98,7 +99,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) + 1, 2);
+    return iterations * std::pow((n * n) * (std::pow(2 * k + 1, 2) - 1) * 2, 2);
   } // no operations
   ~SGS_OMP() {
     delete[] grid;

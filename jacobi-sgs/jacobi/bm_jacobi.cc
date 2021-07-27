@@ -33,7 +33,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return iterations * ((n * n) * std::pow(2 * k + 1, 2) - 1 + 1);
+    return iterations * (n * n) * ((std::pow(2 * k + 1, 2) - 1) * 2);
   } // no operations
   ~JacobiVanilla() {
     delete[] grid;
@@ -61,7 +61,7 @@ public:
   void run() const { jacobi_omp(n, k, iterations, grid, local_mean, alpha); }
   // report number of operations
   double operations() const {
-    return iterations * ((n * n) * std::pow(2 * k + 1, 2) - 1 + 1);
+    return iterations * (n * n) * ((std::pow(2 * k + 1, 2) - 1) * 2);
   } // no operations
   ~Jacobi_OMP() {
     delete[] grid;
