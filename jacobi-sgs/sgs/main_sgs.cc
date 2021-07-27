@@ -45,10 +45,10 @@ int main(int argc, char **argv) {
   // fill boundary and initial values
   auto g = [&](int i0, int i1) {
     return (i0 > 0 && i0 < n - 1 && i1 > 0 && i1 < n - 1)
-               //  ? i0+i1 : ((double)(i0+i1))/n; };
-               ? i0 + i1
-               : i0 * i1 + 5 * i1 + 5 * i0;
-  }; //
+                ? i0+i1 : ((double)(i0+i1))/n; };
+              //  ? i0 + i1
+              //  : i0 * i1 + 5 * i1 + 5 * i0;
+  // }; //
 
   // fill alpha (coefficient stencil)
   coeff_stencil(k, alpha);
