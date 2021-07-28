@@ -1,7 +1,7 @@
 CC = g++
 CCFLAGS_PAR = -fopenmp -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 CCFLAGS_SEQ = -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
-
+CCFLAGS_TEST =  -fopenmp -O3 -funroll-loops -march=native
 all: sgs sgs_seq
 
 sgs:
@@ -21,7 +21,7 @@ plot:
 	python3 run.py
 
 test:
-	python3 test.py
+	$(CC) $(CCFLAGS_TEST) test.cc -o unit_test
 
 clean:
 	rm sgs sgs_seq sgs_vanilla bm_sgs
