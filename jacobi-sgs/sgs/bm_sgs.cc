@@ -113,12 +113,14 @@ public:
 
 // ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-void benchmark(int k, int iterations = 100) {
+void benchmark(int k, int iterations = 50) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
-  std::vector<int> sizes = {50,  100, 150,  200,  250,  300,  350, 400,
-                            500, 800, 1000, 1500, 2000, 2500, 3000};
+  // std::vector<int> sizes = {50,  100, 150,  200,  250,  300,  350, 400,
+                            // 500, 800, 1000, 1500, 2000, 2500, 3000};
+  std::vector<int> sizes = {100, 150,  200,  250,  300,  350, 400,
+                            500};                            
 
   std::cout << "Stencil Size: " << k << ", " << std::endl;
 
