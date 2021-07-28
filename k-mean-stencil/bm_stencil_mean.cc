@@ -138,7 +138,7 @@ void benchmark(int k, int blocksize) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
-  std::vector<int> sizes = {50, 100, 150, 200, 250, 400, 450, 500};
+  std::vector<int> sizes = {200, 300, 400, 500, 600, 700, 800};
 
   std::cout << "Stencil Size: " << k << ", Block Size:" << blocksize << std::endl;
   // std::cout << "**** Vanilla ****\n";
