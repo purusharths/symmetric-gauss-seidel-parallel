@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from matplotlib import style
 
 filename = sys.argv[1]
+title = sys.argv[2]
 
 style.use('seaborn-deep')
 df = pd.read_csv(filename)
@@ -20,10 +21,10 @@ x = 'n'
 
 fig, axes = plt.subplots(nrows=1, ncols=len(y), figsize=(20, 6))
 unique_exps, unique_dfs = make_dfs(dframe=df, col_name='experiment')
-x_ = [each_df[x].to_list() for each_df in unique_dfs]
+x_ = [each_df[x].to_list() for each_df in unique_dfs] 
 
 if __name__ == "__main__":
-    for i in range(len(y)):
+    for i in range(len(x_)):
         y_ = [each_df[y[i]].to_list() for each_df in unique_dfs]
         axes[i].set_title(y[i])
         
@@ -34,4 +35,5 @@ if __name__ == "__main__":
         axes[i].grid(True)
     
     # plt.grid(True)
+    
     plt.show()

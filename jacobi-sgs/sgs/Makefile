@@ -15,7 +15,7 @@ sgs_vanilla:
 
 # need to change flag to compare sequential/parallel
 benchmark:
-	$(CC) $(CCFLAGS_SEQ) bm_sgs.cc -o bm_sgs
+	$(CC) $(CCFLAGS_PAR) bm_sgs.cc -o bm_sgs
 
 plot:
 	python3 run.py

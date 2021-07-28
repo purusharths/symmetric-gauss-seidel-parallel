@@ -36,7 +36,7 @@ public:
   // report number of operations
   double operations() const {
     // return (n * n) * ((std::pow(2 * k + 1, 2) - 1) * (2 * k + 1));
-    return iterations * std::pow((n * n) * std::pow(2 * k + 1, 2) - 1 * 2, 2);
+    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n*n) * iterations;
     // n*n size, 2k+1^2-1 addition, 2k+1 mult, 2 times: for backward iter
   } // no operations
   ~SGS_Sequential() {
@@ -66,7 +66,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return iterations * std::pow((n * n) * (std::pow(2 * k + 1, 2) - 1) * 2, 2);
+    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n*n) * iterations;
   } // no operations
   ~SGS_Vanilla() {
     delete[] grid;
@@ -99,7 +99,9 @@ public:
   }
   // report number of operations
   double operations() const {
-    return iterations * std::pow((n * n) * (std::pow(2 * k + 1, 2) - 1) * 2, 2);
+    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n*n) * iterations;
+    
+    // std::pow((n * n) * (std::pow(2 * k + 1, 2) - 1) * 2, 2);
   } // no operations
   ~SGS_OMP() {
     delete[] grid;
@@ -115,14 +117,13 @@ void benchmark(int k, int iterations = 100) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
-  std::vector<int> sizes = {10,  20,  40,   60,   100,  200, 300,
-                            500, 800, 1000, 1500, 2000, 2500};
+  std::vector<int> sizes = {50,  100, 150,  200,  250,  300,  350, 400,
+                            500, 800, 1000, 1500, 2000, 2500, 3000};
 
   std::cout << "Stencil Size: " << k << ", " << std::endl;
 
-  std::cout
-      << "experiment, n, time (us), iterations, repetitions, Gflops/s, GByte/s"
-      << std::endl;
+  std::cout << "experiment,n,time,iterations,repetitions,Gflops/s,GByte/s"
+            << std::endl;
 
   // ---------------------------------------------------------------------------------
   // std::cout << "\n**** SEQ ****\n";
@@ -140,26 +141,6 @@ void benchmark(int k, int iterations = 100) {
   // std::cout << "\n\n----Experiment Over---- \n\n";
 
   // ---------------------------------------------------------------------------------
-
-  // std::cout << "**** OMP ****\n";
-
-  // for (auto n : sizes) {
-
-  //   SGS_OMP e(n, k, iterations);
-  //   auto d = time_experiment(e);
-  //   double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
-
-  //   std::cout << "omp parllel, " << n << ", " << d.second / time_factor << ",
-  //   "
-  //             << iterations << ", " << d.first << ", " << flops << ", "
-  //             << flops * sizeof(NUMBER) << std::endl;
-  // }
-  // std::cout << "\n\n----Experiment Over---- \n\n";
-
-  // ---------------------------------------------------------------------------------
-
-  // ---------------------------------------------------------------------------------
-
   // std::cout << "**** Vanilla ****\n";
 
   for (auto n : sizes) {
@@ -172,7 +153,25 @@ void benchmark(int k, int iterations = 100) {
               << iterations << ", " << d.first << ", " << flops << ", "
               << flops * sizeof(NUMBER) << std::endl;
   }
-  std::cout << "\n\n----Experiment Over---- \n\n";
+  // std::cout << "\n\n----Experiment Over---- \n\n";
+
+  // ---------------------------------------------------------------------------------
+
+  // std::cout << "**** OMP ****\n";
+
+  for (auto n : sizes) {
+
+    SGS_OMP e(n, k, iterations);
+    auto d = time_experiment(e);
+    double flops = d.first * e.operations() / d.second * 1e6 / 1e9;
+
+    std::cout << "omp parllel, " << n << ", " << d.second / time_factor << ", "
+              << iterations << ", " << d.first << ", " << flops << ", "
+              << flops * sizeof(NUMBER) << std::endl;
+  }
+  // std::cout << "\n\n----Experiment Over---- \n\n";
+
+  // ---------------------------------------------------------------------------------
 
   // ---------------------------------------------------------------------------------
 }
