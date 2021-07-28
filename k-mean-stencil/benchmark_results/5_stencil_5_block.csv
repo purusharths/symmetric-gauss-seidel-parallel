@@ -1,0 +1,42 @@
+Stencil Size: 5, Block Size:5
+experiment,n,time,repetitions,Gflops/s,GByte/s
+vanilla, 50, 0.439307, 2048, 1.41022, 11.2818
+vanilla, 100, 0.453929, 512, 1.36479, 10.9184
+vanilla, 150, 0.259864, 128, 1.34101, 10.7281
+vanilla, 200, 0.470422, 128, 1.31695, 10.5356
+vanilla, 250, 0.371596, 64, 1.30249, 10.4199
+vanilla, 400, 0.480575, 32, 1.28912, 10.313
+vanilla, 450, 0.3051, 16, 1.28496, 10.2796
+vanilla, 500, 0.380734, 16, 1.27123, 10.1698
+blocked, 50, 0.43983, 2048, 1.40854, 11.2684
+blocked, 100, 0.466287, 512, 1.32862, 10.629
+blocked, 150, 0.268281, 128, 1.29894, 10.3915
+blocked, 200, 0.480479, 128, 1.28938, 10.315
+blocked, 250, 0.379697, 64, 1.2747, 10.1976
+blocked, 400, 0.49208, 32, 1.25898, 10.0719
+blocked, 450, 0.310574, 16, 1.26231, 10.0985
+blocked, 500, 0.384344, 16, 1.25929, 10.0743
+simd omp, 50, 0.345106, 2048, 1.79516, 14.3613
+simd omp, 100, 0.355776, 512, 1.74132, 13.9306
+simd omp, 150, 0.404371, 256, 1.72357, 13.7885
+simd omp, 200, 0.361373, 128, 1.71435, 13.7148
+simd omp, 250, 0.283077, 64, 1.70978, 13.6783
+simd omp, 400, 0.364347, 32, 1.70036, 13.6029
+simd omp, 450, 0.461801, 32, 1.69787, 13.583
+simd omp, 500, 0.285292, 16, 1.69651, 13.5721
+simd 4d, 50, 0.34522, 2048, 1.79457, 14.3565
+simd 4d, 100, 0.361855, 512, 1.71207, 13.6965
+simd 4d, 150, 0.404379, 256, 1.72353, 13.7883
+simd 4d, 200, 0.361397, 128, 1.71424, 13.7139
+simd 4d, 250, 0.283178, 64, 1.70917, 13.6734
+simd 4d, 400, 0.364487, 32, 1.6997, 13.5976
+simd 4d, 450, 0.461725, 32, 1.69815, 13.5852
+simd 4d, 500, 0.285412, 16, 1.69579, 13.5664
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
+Stencil smaller than vector size. Skipping...
