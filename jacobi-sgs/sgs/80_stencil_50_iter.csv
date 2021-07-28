@@ -1,4 +1,3 @@
-Stencil Size: 80, 
 experiment,n,time,iterations,repetitions,Gflops/s,GByte/s
 Vanilla, 100, 11.0653, 50, 1, 4.6849, 37.4792
 Vanilla, 150, 37.1373, 50, 1, 3.14077, 25.1262

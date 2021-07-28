@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
   // jacobi_vanilla(n, k, iterations, grid, local_mean, alpha);
   jacobi_omp(n, k, iterations, grid, local_mean, alpha);
-  print_grid(local_mean, n);
+  // print_grid(local_mean, n);
   
   delete[] grid;
   delete[] local_mean;

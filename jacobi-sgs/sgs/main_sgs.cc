@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
   //   std::swap(grid, local_mean);
   // }
 
-  print_grid(grid, n);
+  // print_grid(grid, n);
   // std::cout << "Final Matrix:";
   // print_grid(local_mean, n);
  
