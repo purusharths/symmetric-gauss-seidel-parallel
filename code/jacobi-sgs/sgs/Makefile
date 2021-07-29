@@ -2,7 +2,7 @@ CC = g++
 CCFLAGS_PAR = -fopenmp -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 CCFLAGS_SEQ = -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 CCFLAGS_TEST =  -fopenmp -O3 -funroll-loops -march=native
-all: sgs sgs_seq
+all: sgs sgs_seq benchmark
 
 sgs:
 	$(CC) $(CCFLAGS_PAR) main_sgs.cc -o sgs
