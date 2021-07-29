@@ -33,7 +33,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return (std::pow(2 * k + 1, 2) - 1) * 2 * (n*n) * iterations;
+    return (std::pow(2 * k + 1, 2) - 1) * 2 * (n * n) * iterations;
   } // no operations
   ~JacobiVanilla() {
     delete[] grid;
@@ -61,7 +61,7 @@ public:
   void run() const { jacobi_omp(n, k, iterations, grid, local_mean, alpha); }
   // report number of operations
   double operations() const {
-    return (std::pow(2 * k + 1, 2) - 1) * 2 * (n*n) * iterations;
+    return (std::pow(2 * k + 1, 2) - 1) * 2 * (n * n) * iterations;
   } // no operations
   ~Jacobi_OMP() {
     delete[] grid;
@@ -77,8 +77,7 @@ void benchmark(int k, int iterations = 100) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
-  std::vector<int> sizes = {100, 150,  200,  250,  300,  350, 400,
-                            500};
+  std::vector<int> sizes = {100, 150, 200, 250, 300, 350, 400, 500};
 
   std::cout << "# Stencil Size: " << k << ", ";
 
@@ -117,6 +116,10 @@ void benchmark(int k, int iterations = 100) {
 
 int main(int argc, char **argv) {
   int k;
+  if (argc < 2 || argc > 3) {
+    std::cout << "usage: ./bm_jacobi <stencil size (k)>\n" << std::endl;
+    exit(1);
+  }
   sscanf(argv[1], "%d", &k);
   benchmark(k);
 }

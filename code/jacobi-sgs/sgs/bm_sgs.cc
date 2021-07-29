@@ -36,7 +36,7 @@ public:
   // report number of operations
   double operations() const {
     // return (n * n) * ((std::pow(2 * k + 1, 2) - 1) * (2 * k + 1));
-    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n*n) * iterations;
+    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n * n) * iterations;
     // n*n size, 2k+1^2-1 addition, 2k+1 mult, 2 times: for backward iter
   } // no operations
   ~SGS_Sequential() {
@@ -66,7 +66,7 @@ public:
   }
   // report number of operations
   double operations() const {
-    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n*n) * iterations;
+    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n * n) * iterations;
   } // no operations
   ~SGS_Vanilla() {
     delete[] grid;
@@ -99,8 +99,8 @@ public:
   }
   // report number of operations
   double operations() const {
-    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n*n) * iterations;
-    
+    return (2 * (std::pow(2 * k + 1, 2) - 1)) * 2 * (n * n) * iterations;
+
     // std::pow((n * n) * (std::pow(2 * k + 1, 2) - 1) * 2, 2);
   } // no operations
   ~SGS_OMP() {
@@ -117,10 +117,9 @@ void benchmark(int k, int iterations = 50) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
-  // std::vector<int> sizes = {50,  100, 150,  200,  250,  300,  350, 400,
-                            // 500, 800, 1000, 1500, 2000, 2500, 3000};
-  std::vector<int> sizes = {100, 150,  200,  250,  300,  350, 400,
-                            500};                            
+  std::vector<int> sizes = {50,  100, 150,  200,  250,  300,  350, 400,
+  500, 800, 1000, 1500, 2000, 2500, 3000};
+  // std::vector<int> sizes = {100, 150, 200, 250, 300, 350, 400, 500};
 
   std::cout << "# Stencil Size: " << k << ", " << std::endl;
 
@@ -180,6 +179,11 @@ void benchmark(int k, int iterations = 50) {
 
 int main(int argc, char **argv) {
   int k, iterations;
+  if (argc < 2 || argc > 3) {
+    std::cout << "usage: ./bm_sgs <stencil size (k)> <iterations>\n"
+              << std::endl;
+    exit(1);
+  }
   sscanf(argv[1], "%d", &k);
   sscanf(argv[2], "%d", &iterations);
   benchmark(k, iterations);
