@@ -122,7 +122,7 @@ void benchmark(int k, int iterations = 50) {
   std::vector<int> sizes = {100, 150,  200,  250,  300,  350, 400,
                             500};                            
 
-  std::cout << "Stencil Size: " << k << ", " << std::endl;
+  std::cout << "# Stencil Size: " << k << ", " << std::endl;
 
   std::cout << "experiment,n,time,iterations,repetitions,Gflops/s,GByte/s"
             << std::endl;

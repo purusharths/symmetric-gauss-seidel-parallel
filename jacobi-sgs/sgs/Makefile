@@ -24,4 +24,4 @@ test:
 	$(CC) $(CCFLAGS_TEST) test.cc -o unit_test
 
 clean:
-	rm sgs sgs_seq sgs_vanilla bm_sgs
+	rm sgs sgs_seq sgs_vanilla bm_sgs unit_test

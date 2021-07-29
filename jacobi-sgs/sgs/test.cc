@@ -5,8 +5,8 @@
 #include "sgs-omp-bw.hh"
 #include "sgs-omp-fw.hh"
 
-#include "vanilla/sgs-bw.hh"
-#include "vanilla/sgs-fw.hh"
+#include "vanilla/sgs-bw-seq.hh"
+#include "vanilla/sgs-fw-seq.hh"
 
 #include "utilities.hh"
 
@@ -16,9 +16,9 @@ namespace tt = boost::test_tools;
 BOOST_AUTO_TEST_CASE(test, *utf::tolerance(0.02)) {
   // framework::master_test_suite().argv[0] 
   int n = 200; // 0 -> n = n+1
-  int k = 10;
+  int k = 20;
   int blocksize;
-  int iterations = 200;
+  int iterations = 100;
 
   int stencil_size = 2 * k + 1;
   double *grid_omp = new (std::align_val_t(64)) double[n * n];
@@ -29,8 +29,8 @@ BOOST_AUTO_TEST_CASE(test, *utf::tolerance(0.02)) {
   fill_array(n, grid_van);
 
   for (int i = 0; i < iterations; i++) {
-    forward_gauss_sidel(n, k, grid_van, alpha);
-    backward_gauss_sidel(n, k, grid_van, alpha);
+    forward_gauss_sidel_seq(n, k, grid_van, alpha);
+    backward_gauss_sidel_seq(n, k, grid_van, alpha);
   }
 
   for (int i = 0; i < iterations; i++) {

@@ -6,8 +6,8 @@
 #include "sgs-bw.hh"
 #include "sgs-fw.hh"
 
-#include "../time_experiment.hh"
-#include "../utilities.hh"
+#include "../../time_experiment.hh"
+#include "../../utilities.hh"
 
 #define BENCHMARK
 

@@ -138,9 +138,9 @@ void benchmark(int k, int blocksize) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
-  std::vector<int> sizes = {200, 300, 400, 500, 600, 700, 800};
+  std::vector<int> sizes = {500, 600,  700, 800, 900,  1000, 1500, 2000, 2500};
 
-  std::cout << "Stencil Size: " << k << ", Block Size:" << blocksize << std::endl;
+  std::cout << "# Stencil Size: " << k << ", Block Size:" << blocksize << std::endl;
   // std::cout << "**** Vanilla ****\n";
   std::cout << "experiment,n,time,repetitions,Gflops/s,GByte/s" << std::endl;
   for (auto n : sizes) {
@@ -234,7 +234,7 @@ void benchmark(int k, int blocksize) {
       std::cout << "simd 8d, " << n << ", " << d.second / time_factor<< ", " << d.first
                 << ", " << flops << ", " << flops * sizeof(NUMBER) << std::endl;
     } else {
-      std::cout << "Stencil smaller than vector size. Skipping..." << std::endl;
+      std::cout << "# Stencil smaller than vector size. Skipping..." << std::endl;
     }
     // std::cout << "n=" << n << " took " << d.second << " us for " << d.first
     //           << " repetitions"

@@ -59,10 +59,10 @@ int main(int argc, char **argv) {
   // print the grid
   // print_grid(grid, n);
 
-  stencil_mean_vanilla(n, k, grid, local_mean);
+  // stencil_mean_vanilla(n, k, grid, local_mean);
   // stencil_mean_blocked(n, k, grid, local_mean, blocksize);
   // stencil_simd(n, k, grid, local_mean, blocksize);
   // stencil_simd_large_vec(n, k, grid, local_mean, blocksize);
-  // stencil_omp_simd(n, k, grid, local_mean, blocksize);
+  stencil_omp_simd(n, k, grid, local_mean, blocksize);
   // print_grid(local_mean, n);
 }

@@ -2,7 +2,7 @@ CC = g++
 CCFLAGS_PAR = -fopenmp -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 CCFLAGS_SEQ = -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 
-all: jacobi jacobi_seq
+all: jacobi jacobi_seq benchmark
 
 jacobi:
 	$(CC) $(CCFLAGS_PAR) main_jacobi.cc -o jacobi
@@ -16,9 +16,6 @@ benchmark:
 
 plot:
 	python3 run.py 
-
-test:
-	python3 test.py
 
 clean:
 	rm jacobi jacobi_seq bm_jacobi

@@ -3,10 +3,10 @@ CC = g++
 CCFLAGS_PAR = -fopenmp -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 CCFLAGS_SEQ = -O3  -funroll-loops -ftree-vectorize -march=native -fopt-info-vec
 
-all: vanilla blocked simd4d simd_omp simd8d
+all: benchmark 
 
-vanilla:
-	$(CC) $(CCFLAGS_SEQ) main_sgs.cc -o sgs
+benchmark:
+	$(CC) $(CCFLAGS_SEQ) bm_stencil_mean.cc -o bm_stencil
 
 blocked:
 	$(CC) $(CCFLAGS_SEQ) main_sgs.cc -o sgs_seq
