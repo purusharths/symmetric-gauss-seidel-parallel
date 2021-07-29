@@ -1,6 +1,13 @@
 Install python dependency for plotting:
 `pip install -r requirements.txt` <br>
-CPP dependency: VCL, OpenMP
+CPP dependency: VCL, OpenMP <br>
+
+Output from benchmarks can be redirected to a csv file. The plot can be obtained by giving filename as command line argument to the python file.
+```
+./bm_jacobi 50 >> jbm_50k.csv
+python3 run.py jbm_50k.csv
+```
+Lines beginning with # inside the csv file are ignored while plotting. This can be used for plotting specific graphs from the benchmark.
 
 The folder structure is as follows:
 ```
