@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(test, *utf::tolerance(0.02)) {
   int n = 200; // 0 -> n = n+1
   int k = 20;
   int blocksize;
-  int iterations = 100;
+  int iterations = 200;
 
   int stencil_size = 2 * k + 1;
   double *grid_omp = new (std::align_val_t(64)) double[n * n];

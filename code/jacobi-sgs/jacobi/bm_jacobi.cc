@@ -73,7 +73,7 @@ public:
 
 // ---------------------------------------------------------------------------------
 // ---------------------------------------------------------------------------------
-void benchmark(int k, int iterations = 50) {
+void benchmark(int k, int iterations = 100) {
   // std::cout << N * sizeof(NUMBER) / 1024 / 1024 << " MByte per vector"
   //           << std::endl;
   double time_factor = 1e6;
