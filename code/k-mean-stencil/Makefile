@@ -28,4 +28,4 @@ test:
 	python3 test.py
 
 clean:
-	rm vanilla blocked simd4d simd_omp simd8d
+	rm bm_stencil vanilla blocked simd4d simd_omp simd8d
