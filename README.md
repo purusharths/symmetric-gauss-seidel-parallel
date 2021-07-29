@@ -1,5 +1,5 @@
 Install python dependency for plotting:
-`pip install -r requirements.txt`
+`pip install -r requirements.txt` <br>
 CPP dependency: VCL, OpenMP
 
 The folder structure is as follows:
