@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
-#include <vcl/vectorf128.h>
+#include "vcl/vectorf128.h"
 
 void stencil_simd_large_vec(int n, int k, double *grid, double *local_mean,
                             int blocksize = 4) {
